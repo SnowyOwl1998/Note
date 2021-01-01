@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
-    tools:context=".CreateNoteActivity">
+    tools:context=".activities.CreateNoteActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -57,7 +57,7 @@
                 android:layout_marginEnd="@dimen/_12sdp"
                 android:background="@null"
                 android:fontFamily="@font/nunito_bold"
-                android:hint="Note Title"
+                android:hint="@string/note_title"
                 android:imeOptions="actionDone"
                 android:importantForAutofill="no"
                 android:includeFontPadding="false"
@@ -113,6 +113,7 @@
                 android:layout_marginLeft="@dimen/_12sdp" />
 
             <EditText
+                android:id="@+id/inputNote"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_12sdp"
