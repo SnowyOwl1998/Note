@@ -9,12 +9,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.note.NotesDatabase;
 import com.example.note.R;
 import com.example.note.entities.Note;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -55,6 +57,8 @@ public class CreateNoteActivity extends AppCompatActivity {
                 saveNote();
             }
         });
+
+        initMiscellaneous();
     }
 
     private void saveNote(){
@@ -89,5 +93,20 @@ public class CreateNoteActivity extends AppCompatActivity {
             }
         }
         new SaveNoteTask().execute();
+    }
+
+    private void initMiscellaneous(){
+        final LinearLayout layoutMiscellaneous = findViewById(R.id.layoutMiscellaneous);
+        final BottomSheetBehavior<LinearLayout> bottomSheetBehavior = BottomSheetBehavior.from(layoutMiscellaneous);
+        layoutMiscellaneous.findViewById(R.id.textMiscellaneous).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED){
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                } else {
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                }
+            }
+        });
     }
 }
