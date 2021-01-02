@@ -6,10 +6,12 @@
     <string name="type_note_here">Ghi chú...</string>
     <string name="note_title">Tiêu đề</string>
     <string name="pick_color">Chọn màu</string>
-    <string name="miscellanous">Bảng màu</string>
+    <string name="miscellanous">Tùy chọn</string>
     <string name="add_image">Thêm ảnh</string>
     <string name="add_url">Thêm url</string>
     <string name="enter_url">Nhập url</string>
     <string name="add">Thêm</string>
     <string name="cancel">Hủy</string>
+    <string name="delete_note">Xóa</string>
+    <string name="confirm">Bạn có chắc chắn muốn xóa không?</string>
 </resources>
