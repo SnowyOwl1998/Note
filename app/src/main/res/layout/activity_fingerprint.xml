@@ -12,7 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:ignore="MissingConstraints">
         <ImageView
             android:id="@+id/imageFingerprint"
             android:layout_width="@dimen/_70sdp"

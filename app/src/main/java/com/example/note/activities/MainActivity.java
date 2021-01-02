@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
     public static final int REQUEST_CODE_SHOW_NOTES = 3;
     public static final int REQUEST_CODE_SELECT_IMAGE = 4;
     public static final int REQUEST_CODE_STORAGE_PERMISSION = 5;
+    public static final int REQUEST_CODE_LOCK = 6;
 
     private RecyclerView notesRecyclerView;
     private List<Note> noteList;
@@ -133,6 +134,13 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
             @Override
             public void onClick(View view) {
                 showAddUrlDialog();
+            }
+        });
+
+        findViewById(R.id.imageLock).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showLockScreen();
             }
         });
     }
@@ -237,6 +245,9 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
                         }
                     }
                 }
+            } else if (requestCode == REQUEST_CODE_LOCK && resultCode == RESULT_OK){
+                Intent intent2 = new Intent(getApplicationContext(), MainActivity.class);
+                startActivityForResult(intent2, 0);
             }
         }
     }
@@ -283,5 +294,10 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
             });
         }
         dialogAddUrl.show();
+    }
+
+    private void showLockScreen(){
+        Intent intent = new Intent(getApplicationContext(), FingerprintActivity.class);
+        startActivityForResult(intent, REQUEST_CODE_LOCK);
     }
 }

@@ -18,4 +18,5 @@
     <string name="touch_to_scan">Vui lòng quét mã vân tay của bạn để truy cập</string>
     <string name="not_valid">Vân tay không hợp lệ</string>
     <string name="desc">Sử dụng dấu vân tay để bảo mật ghi chú của bạn</string>
+    <string name="lock">Khóa ghi chú</string>
 </resources>
