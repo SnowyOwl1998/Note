@@ -135,8 +135,10 @@
                 android:padding="@dimen/_4sdp"
                 android:src="@drawable/ic_delete"
                 android:tint="@color/white"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="@id/imageNote"
-                app:layout_constraintTop_toTopOf="@id/imageNote"/>
+                app:layout_constraintTop_toTopOf="@id/imageNote"
+                android:layout_marginRight="@dimen/_10sdp" />
 
             <LinearLayout
                 android:id="@+id/layoutWebUrl"

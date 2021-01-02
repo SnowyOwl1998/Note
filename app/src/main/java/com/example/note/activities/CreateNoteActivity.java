@@ -118,6 +118,20 @@ public class CreateNoteActivity extends AppCompatActivity {
             }
         });
 
+        if(getIntent().getBooleanExtra("isFromQuickAction",false)){
+            String type = getIntent().getStringExtra("quickActionType");
+            if(type != null){
+                if (type.equals("image")){
+                    selectedImagePath = getIntent().getStringExtra("imagePath");
+                    imageNote.setImageBitmap(BitmapFactory.decodeFile(selectedImagePath));
+                    findViewById(R.id.imageRemoveImage).setVisibility(View.VISIBLE);
+                } else if(type.equals("Url")){
+                    textWebUrl.setText(getIntent().getStringExtra("Url"));
+                    layoutWebUrl.setVisibility(View.VISIBLE);
+                }
+            }
+        }
+
         initMiscellaneous();
         setSubtitleIndicator();
     }
@@ -292,16 +306,7 @@ public class CreateNoteActivity extends AppCompatActivity {
             }
         });
 
-        if(alreadyAvailableNote != null){
-            layoutMiscellaneous.findViewById(R.id.layoutDeleteNote).setVisibility(View.VISIBLE);
-            layoutMiscellaneous.findViewById(R.id.layoutDeleteNote).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                    showDeleteNoteDialog();
-                }
-            });
-        }
+
 
         if(alreadyAvailableNote != null && alreadyAvailableNote.getColor() != null && !alreadyAvailableNote.getColor().trim().isEmpty()){
             switch (alreadyAvailableNote.getColor()){
@@ -318,6 +323,16 @@ public class CreateNoteActivity extends AppCompatActivity {
                     layoutMiscellaneous.findViewById(R.id.viewColor5).performClick();
                     break;
             }
+        }
+        if(alreadyAvailableNote != null){
+            layoutMiscellaneous.findViewById(R.id.layoutDeleteNote).setVisibility(View.VISIBLE);
+            layoutMiscellaneous.findViewById(R.id.layoutDeleteNote).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                    showDeleteNoteDialog();
+                }
+            });
         }
     }
 
@@ -336,11 +351,13 @@ public class CreateNoteActivity extends AppCompatActivity {
             view.findViewById(R.id.textDeleteMote).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    @SuppressLint("StaticFieldLeak")
                     class DeleteNoteTask extends AsyncTask<Void, Void, Void>{
 
                         @Override
                         protected Void doInBackground(Void... voids) {
-                            NotesDatabase.getDatabase(getApplicationContext()).noteDao();
+                            NotesDatabase.getDatabase(getApplicationContext()).noteDao()
+                            .deleteNote(alreadyAvailableNote );
                             return null;
                         }
 

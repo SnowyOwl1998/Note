@@ -14,4 +14,8 @@
     <string name="cancel">Hủy</string>
     <string name="delete_note">Xóa</string>
     <string name="confirm">Bạn có chắc chắn muốn xóa không?</string>
+    <string name="touch">Truy cập bằng vân tay</string>
+    <string name="touch_to_scan">Vui lòng quét mã vân tay của bạn để truy cập</string>
+    <string name="not_valid">Vân tay không hợp lệ</string>
+    <string name="desc">Sử dụng dấu vân tay để bảo mật ghi chú của bạn</string>
 </resources>

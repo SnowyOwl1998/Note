@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorPrimary"
+    tools:context="activities.FingerprintActivity">
+    
+    <LinearLayout
+        android:id="@+id/layoutFingerprint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
+        <ImageView
+            android:id="@+id/imageFingerprint"
+            android:layout_width="@dimen/_70sdp"
+            android:layout_height="@dimen/_70sdp"
+            android:src="@drawable/ic_fingerprint"
+            android:tint="@color/white"
+            android:layout_marginTop="@dimen/_100sdp"
+            android:paddingTop="@dimen/_2sdp"
+            android:layout_marginBottom="@dimen/_30sdp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/touch"
+            android:textSize="@dimen/_24ssp"
+            android:textColor="@color/white"
+            android:layout_marginLeft="@dimen/_5sdp"
+            android:layout_marginRight="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginBottom="@dimen/_10sdp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/touch_to_scan"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_16ssp"
+            android:paddingEnd="@dimen/_30sdp"
+            android:paddingStart="@dimen/_30sdp"
+            android:layout_margin="@dimen/_16sdp"
+            android:gravity="center"
+            android:textAlignment="center"/>
+        <TextView
+            android:id="@+id/errorText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/not_valid"
+            android:textSize="@dimen/_14ssp"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:paddingEnd="@dimen/_30sdp"
+            android:paddingStart="@dimen/_30sdp"
+            android:textColor="@color/colorDelete"
+            android:visibility="gone"/>
+
+
+    </LinearLayout>
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:hint="@string/desc"
+    android:textColorHint="@color/colorTextHint"
+    android:textSize="@dimen/_14ssp"
+    android:layout_margin="@dimen/_16sdp"
+    android:textAlignment="center"
+    android:gravity="center"
+    android:layout_marginRight="@dimen/_16sdp"
+    android:layout_marginLeft="@dimen/_16sdp"
+    android:layout_marginBottom="@dimen/_26sdp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
