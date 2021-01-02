@@ -17,9 +17,9 @@
         android:fontFamily="@font/nunito_semibold"
         android:gravity="center"
         android:includeFontPadding="false"
-        android:text="Miscellanous"
+        android:text="@string/miscellanous"
         android:textColor="@color/white"
-        android:textSize="@dimen/_13ssp"/>
+        android:textSize="@dimen/_18ssp"/>
 
     <LinearLayout
         android:id="@+id/layoutNoteColor"
@@ -149,6 +149,31 @@
             android:textColor="@color/white"
             android:textSize="@dimen/_13ssp"/>
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutAddImage"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_35sdp"
+        android:layout_margin="@dimen/_10sdp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        tools:ignore="UseCompoundDrawables">
+        <ImageView
+            android:layout_width="@dimen/_22sdp"
+            android:layout_height="@dimen/_22sdp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_image"
+            android:tint="@color/colorIcons"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:fontFamily="@font/nunito_semibold"
+            android:text="@string/add_image"
+            android:textColor="@color/colorIcons"
+            android:textSize="@dimen/_12ssp"
+            android:layout_marginLeft="@dimen/_10sdp" />
     </LinearLayout>
 
 </LinearLayout>

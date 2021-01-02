@@ -1,9 +1,11 @@
 <resources>
-    <string name="app_name">Note</string>
-    <string name="my_notes">My Notes</string>
-    <string name="search_notes">Search notes</string>
-    <string name="note_subtitle">Note Subtitle</string>
-    <string name="type_note_here">Type note here...</string>
-    <string name="note_title">Note Title</string>
+    <string name="app_name">Ghi chú</string>
+    <string name="my_notes">Ghi chú</string>
+    <string name="search_notes">Tìm kiếm</string>
+    <string name="note_subtitle">Phụ đề</string>
+    <string name="type_note_here">Ghi chú...</string>
+    <string name="note_title">Tiêu đề</string>
     <string name="pick_color">Chọn màu</string>
+    <string name="miscellanous">Bảng màu</string>
+    <string name="add_image">Thêm ảnh</string>
 </resources>
