@@ -10,6 +10,9 @@ import android.os.Bundle;
 import android.security.keystore.KeyGenParameterSpec;
 import android.security.keystore.KeyPermanentlyInvalidatedException;
 import android.security.keystore.KeyProperties;
+import android.util.Log;
+import android.view.KeyEvent;
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -120,6 +123,7 @@ public class FingerprintActivity extends AppCompatActivity {
     public boolean cipherInit() {
         try {
             cipher = Cipher.getInstance(KeyProperties.KEY_ALGORITHM_AES + "/" + KeyProperties.BLOCK_MODE_CBC + "/" + KeyProperties.ENCRYPTION_PADDING_PKCS7);
+            Log.d("CipherLog", "cipherInit: "+ cipher);
         } catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
             throw new RuntimeException("Failed to get Cipher", e);
         }
@@ -129,6 +133,7 @@ public class FingerprintActivity extends AppCompatActivity {
             SecretKey key = (SecretKey) keyStore.getKey(KEY_NAME,
                     null);
             cipher.init(Cipher.ENCRYPT_MODE, key);
+            Log.d("KeyLog", "cipherInit: "+ keyStore);
             return true;
         } catch (KeyPermanentlyInvalidatedException e) {
             return false;
@@ -136,5 +141,16 @@ public class FingerprintActivity extends AppCompatActivity {
             throw new RuntimeException("Failed to init Cipher", e);
         }
     }
-}
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK){
+            TextView textView = findViewById(R.id.errorText);
+            textView.setText("Vui lòng quét vân tay để mở khóa");
+            textView.setVisibility(View.VISIBLE);
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+    }
 

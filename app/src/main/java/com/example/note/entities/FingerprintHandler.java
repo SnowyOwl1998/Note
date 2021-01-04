@@ -23,6 +23,10 @@ import com.example.note.activities.MainActivity;
 public class FingerprintHandler extends FingerprintManager.AuthenticationCallback {
 
     private Context context;
+    private static final int ERROR = 1;
+    private static final int HELP = 2;
+    private static final int FAILED = 3;
+    private static final int SUCCESS = 4;
 
     public FingerprintHandler(Context mContext){
         context = mContext;
@@ -37,30 +41,40 @@ public class FingerprintHandler extends FingerprintManager.AuthenticationCallbac
 
     @Override
     public void onAuthenticationError(int errMsgId, CharSequence errString) {
-        this.update("Có lỗi xảy ra\n" + errString, false);
+        this.update(ERROR, false);
+        Log.d("FingerprintLog",  errMsgId+": "+errString);
     }
 
     @Override
     public void onAuthenticationHelp(int helpMsgId, CharSequence helpString) {
-        this.update("Fingerprint Authentication help\n" + helpString, false);
+        this.update(HELP, false);
+        Log.d("FingerprintLog", helpMsgId+": "+helpString);
     }
 
     @Override
     public void onAuthenticationFailed() {
-        this.update("Mở khóa thất bại.", false);
+        this.update(FAILED, false);
+        Log.d("FingerprintLog", "");
     }
 
     @Override
     public void onAuthenticationSucceeded(FingerprintManager.AuthenticationResult result) {
-        this.update("Mở khóa thành công.", true);
+        this.update(SUCCESS, true);
+        Log.d("FingerprintLog", String.valueOf(result));
     }
 
-    public void update(String e, Boolean success){
+    public void update(final int i, Boolean success){
         TextView textView = (TextView) ((Activity)context).findViewById(R.id.errorText);
-        textView.setText(e);
-        if(success){
-            textView.setTextColor(ContextCompat.getColor(context,R.color.colorDelete));
-            textView.setVisibility(View.VISIBLE);
+        textView.setTextColor(ContextCompat.getColor(context,R.color.colorDelete));
+        textView.setVisibility(View.VISIBLE);
+        if(i == SUCCESS){
+            textView.setText("Mở khóa thành công.");
+        } else if (i == ERROR) {
+            textView.setText("Xảy ra lỗi");
+        } else if (i == FAILED) {
+            textView.setText("Mở khóa không thành công");
+        } else if (i == HELP) {
+            textView.setText("Vui lòng quét vân tay");
         }
     }
 }

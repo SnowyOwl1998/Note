@@ -52,7 +52,7 @@ public class CreateNoteActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_SELECT_IMAGE = 2;
     private ImageView imageNote;
     private TextView textWebUrl;
-    private LinearLayout layoutWebUrl;
+    private LinearLayout layoutWebUrl, layoutLock;
     private AlertDialog dialogAddUrl;
     private Note alreadyAvailableNote;
     private AlertDialog dialogDeleteNote;
@@ -78,6 +78,7 @@ public class CreateNoteActivity extends AppCompatActivity {
         imageNote = findViewById(R.id.imageNote);
         textWebUrl = findViewById(R.id.textWebUrl);
         layoutWebUrl = findViewById(R.id.layoutWebUrl);
+        layoutLock = findViewById(R.id.layoutLock);
 
         textDateTime.setText(
                 new SimpleDateFormat("EEEE, dd MMMM yyyy HH:mm a", Locale.getDefault())
@@ -117,6 +118,12 @@ public class CreateNoteActivity extends AppCompatActivity {
                 selectedImagePath = "";
             }
         });
+        findViewById(R.id.layoutLock).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
 
         if(getIntent().getBooleanExtra("isFromQuickAction",false)){
             String type = getIntent().getStringExtra("quickActionType");
@@ -153,6 +160,7 @@ public class CreateNoteActivity extends AppCompatActivity {
             textWebUrl.setText(alreadyAvailableNote.getWebLink());
             layoutWebUrl.setVisibility(View.VISIBLE);
         }
+        layoutLock.setVisibility(View.VISIBLE);
     }
 
     private void saveNote(){
