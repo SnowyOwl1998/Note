@@ -2,7 +2,11 @@ package com.example.note.activities;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.KeyguardManager;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.fingerprint.FingerprintManager;
 import android.os.Build;
@@ -21,7 +25,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import com.example.note.R;
-import com.example.note.entities.FingerprintHandler;
+import com.example.note.security.FingerprintHandler;
 
 import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
@@ -45,6 +49,7 @@ public class FingerprintActivity extends AppCompatActivity {
     private Cipher cipher;
     private TextView textView;
     private FingerprintManager fingerprintManager;
+    private Boolean changeLockMode;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,14 +57,20 @@ public class FingerprintActivity extends AppCompatActivity {
         setContentView(R.layout.activity_fingerprint);
 
         KeyguardManager keyguardManager = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if(getIntent().getBooleanExtra("isChangeLockMode", false))
+            changeLockMode = true;
+        else changeLockMode = false;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !changeLockMode) {
             fingerprintManager = (FingerprintManager) getSystemService(FINGERPRINT_SERVICE);
+        } else {
+            
         }
 
         textView = (TextView) findViewById(R.id.errorText);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ) {
             if(!fingerprintManager.isHardwareDetected()){
-                textView.setText("Thiết bị của bạn không có quét vân tay");
+                textView.setText("Thiết bị của bạn không hỗ trợ quét vân tay");
             }else {
                 if (ActivityCompat.checkSelfPermission(this, Manifest.permission.USE_FINGERPRINT) != PackageManager.PERMISSION_GRANTED) {
                     textView.setText("Chưa được cấp quyền sử dụng dấu vân tay");

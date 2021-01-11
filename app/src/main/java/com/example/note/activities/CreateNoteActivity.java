@@ -21,6 +21,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,7 +53,7 @@ public class CreateNoteActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_SELECT_IMAGE = 2;
     private ImageView imageNote;
     private TextView textWebUrl;
-    private LinearLayout layoutWebUrl, layoutLock;
+    private LinearLayout layoutWebUrl, layoutLock, layoutUnlock;
     private AlertDialog dialogAddUrl;
     private Note alreadyAvailableNote;
     private AlertDialog dialogDeleteNote;
@@ -79,6 +80,7 @@ public class CreateNoteActivity extends AppCompatActivity {
         textWebUrl = findViewById(R.id.textWebUrl);
         layoutWebUrl = findViewById(R.id.layoutWebUrl);
         layoutLock = findViewById(R.id.layoutLock);
+        layoutUnlock = findViewById(R.id.layoutUnlock);
 
         textDateTime.setText(
                 new SimpleDateFormat("EEEE, dd MMMM yyyy HH:mm a", Locale.getDefault())
@@ -98,7 +100,23 @@ public class CreateNoteActivity extends AppCompatActivity {
 
         if(getIntent().getBooleanExtra("isViewOrUpdate", false)){
             alreadyAvailableNote =  (Note) getIntent().getSerializableExtra("note");
-            setViewOrUpdate();
+//            Log.d("test1", alreadyAvailableNote.getId() + (alreadyAvailableNote.getLockMode()).toString() + alreadyAvailableNote.getTitle());
+            class CheckLockNote extends AsyncTask<Void, Void, Integer> {
+                int lockMode;
+                @Override
+                protected Integer doInBackground(Void... voids) {
+                    lockMode = NotesDatabase.getDatabase(getApplicationContext()).noteDao().checkLockNote(alreadyAvailableNote.getId());
+//                    Log.d("test2", "doInBackground: "+lockMode);
+                    return lockMode;
+                }
+
+                @Override
+                protected void onPostExecute(Integer integer) {
+                    super.onPostExecute(integer);
+                    setViewOrUpdate(lockMode);
+                }
+            }
+            new CheckLockNote().execute();
         }
 
         findViewById(R.id.imageRemoveWebUrl).setOnClickListener(new View.OnClickListener() {
@@ -116,12 +134,6 @@ public class CreateNoteActivity extends AppCompatActivity {
                 imageNote.setVisibility(View.GONE);
                 findViewById(R.id.imageRemoveImage).setVisibility(View.GONE);
                 selectedImagePath = "";
-            }
-        });
-        findViewById(R.id.layoutLock).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
             }
         });
 
@@ -143,7 +155,7 @@ public class CreateNoteActivity extends AppCompatActivity {
         setSubtitleIndicator();
     }
 
-    private void setViewOrUpdate(){
+    private void setViewOrUpdate(int lockMode){
         inputNoteTitle.setText(alreadyAvailableNote.getTitle());
         inputNoteSubtitle.setText(alreadyAvailableNote.getSubtitle());
         inputNoteText.setText(alreadyAvailableNote.getNoteText());
@@ -160,7 +172,18 @@ public class CreateNoteActivity extends AppCompatActivity {
             textWebUrl.setText(alreadyAvailableNote.getWebLink());
             layoutWebUrl.setVisibility(View.VISIBLE);
         }
-        layoutLock.setVisibility(View.VISIBLE);
+
+//        Log.d("test3", String.valueOf(lockMode));
+        if(lockMode == 1){
+//            Log.d("test1", "setViewOrUpdate: "+ alreadyAvailableNote.getLockMode());
+            startActivityForResult(new Intent(getApplicationContext(), FingerprintActivity.class), 0);
+            layoutLock.setVisibility(View.GONE);
+            layoutUnlock.setVisibility(View.VISIBLE);
+        } else {
+            layoutLock.setVisibility(View.VISIBLE);
+            layoutUnlock.setVisibility(View.GONE);
+        }
+
     }
 
     private void saveNote(){
@@ -179,6 +202,7 @@ public class CreateNoteActivity extends AppCompatActivity {
         note.setDateTime(textDateTime.getText().toString());
         note.setColor(selectedNoteColor);
         note.setImagePath(selectedImagePath);
+        note.setLockMode(false);
 
         if(layoutWebUrl.getVisibility() == View.VISIBLE){
             note.setWebLink(textWebUrl.getText().toString());
@@ -311,6 +335,52 @@ public class CreateNoteActivity extends AppCompatActivity {
             public void onClick(View view) {
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                 showAddUrlDialog();
+            }
+        });
+
+        layoutMiscellaneous.findViewById(R.id.layoutLock).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                layoutLock.setVisibility(View.GONE);
+                layoutUnlock.setVisibility(View.VISIBLE);
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                @SuppressLint("StaticFieldLeak")
+                class SetLockMode extends AsyncTask<Void, Void, Void>{
+
+                    @Override
+                    protected Void doInBackground(Void... voids) {
+                        NotesDatabase.getDatabase(getApplicationContext()).noteDao().lockNote(true, alreadyAvailableNote.getId());
+                        return null;
+                    }
+//                    @Override
+//                    protected void onPostExecute(Void aVoid) {
+//                        super.onPostExecute(aVoid);
+//                        Intent intent = new Intent();
+//                        intent.putExtra("isNoteDeleted", true);
+//                        setResult(RESULT_OK, intent);
+//                        finish();
+//                    }
+                }
+                new SetLockMode().execute();
+            }
+        });
+
+        layoutMiscellaneous.findViewById(R.id.layoutUnlock).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                layoutLock.setVisibility(View.VISIBLE);
+                layoutUnlock.setVisibility(View.GONE);
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                @SuppressLint("StaticFieldLeak")
+                class SetUnlockMode extends AsyncTask<Void, Void, Void>{
+
+                    @Override
+                    protected Void doInBackground(Void... voids) {
+                        NotesDatabase.getDatabase(getApplicationContext()).noteDao().lockNote(false, alreadyAvailableNote.getId());
+                        return null;
+                    }
+                }
+                new SetUnlockMode().execute();
             }
         });
 

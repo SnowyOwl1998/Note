@@ -76,6 +76,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
             TextView textTitle, textSubtitle, textDateTime;
             LinearLayout layoutNote;
             RoundedImageView imageNote;
+            Boolean lockMode;
 
             NoteViewHolder(@NonNull View itemView) {
                 super(itemView);
@@ -88,7 +89,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
 
             void setNote(Note note) {
                 textTitle.setText(note.getTitle());
-                if (note.getSubtitle().trim().isEmpty()){
+                if (note.getSubtitle().trim().isEmpty() || note.getLockMode()){
                     textSubtitle.setVisibility(View.GONE);
                 } else {
                     textSubtitle.setText(note.getSubtitle());
@@ -101,7 +102,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
                 } else {
                     gradientDrawable.setColor(Color.parseColor("#333333"));
                 }
-                if (note.getImagePath() != null) {
+                if (note.getImagePath() != null && !note.getLockMode()) {
                     imageNote.setImageBitmap(BitmapFactory.decodeFile(note.getImagePath()));
                     imageNote.setVisibility(View.VISIBLE);
                 } else {

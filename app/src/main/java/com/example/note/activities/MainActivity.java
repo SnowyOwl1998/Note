@@ -8,6 +8,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+import androidx.room.Room;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -35,6 +36,11 @@ import com.example.note.adapters.NotesAdapter;
 import com.example.note.entities.Note;
 import com.example.note.listeners.NotesListener;
 
+import net.sqlcipher.database.SQLiteDatabase;
+import net.sqlcipher.database.SupportFactory;
+
+import java.io.File;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,14 +51,14 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
     public static final int REQUEST_CODE_SHOW_NOTES = 3;
     public static final int REQUEST_CODE_SELECT_IMAGE = 4;
     public static final int REQUEST_CODE_STORAGE_PERMISSION = 5;
-    public static final int REQUEST_CODE_LOCK = 6;
+    public static final int REQUEST_CHANGE_LOCK_MODE = 6;
 
     private RecyclerView notesRecyclerView;
     private List<Note> noteList;
     private NotesAdapter notesAdapter;
     private int noteClickedPosition = -1;
-
     private AlertDialog dialogAddUrl;
+    private AlertDialog dialogLock;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,9 +146,10 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
         findViewById(R.id.imageLock).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showLockScreen();
+                showLockDialog();
             }
         });
+
     }
 
     private void selectedImage(){
@@ -245,9 +252,8 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
                         }
                     }
                 }
-            } else if (requestCode == REQUEST_CODE_LOCK && resultCode == RESULT_OK){
-                Intent intent2 = new Intent(getApplicationContext(), MainActivity.class);
-                startActivityForResult(intent2, 0);
+            } else if (requestCode == REQUEST_CHANGE_LOCK_MODE && resultCode == RESULT_OK){
+
             }
         }
     }
@@ -296,8 +302,40 @@ public class MainActivity extends AppCompatActivity implements NotesListener {
         dialogAddUrl.show();
     }
 
-    private void showLockScreen(){
-        Intent intent = new Intent(getApplicationContext(), FingerprintActivity.class);
-        startActivityForResult(intent, REQUEST_CODE_LOCK);
+    private void showLockDialog(){
+        if (dialogLock == null){
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+            View view = LayoutInflater.from(this).inflate(
+                    R.layout.layout_select_lock_mode,
+                    (ViewGroup) findViewById(R.id.layoutSelectLockModeContainer)
+            );
+            builder.setView(view);
+
+            dialogLock = builder.create();
+            if (dialogLock.getWindow() != null){
+                dialogLock.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+            }
+
+            view.findViewById(R.id.layoutPin).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialogLock.dismiss();
+                    Intent intent = new Intent(getApplicationContext(), FingerprintActivity.class);
+                    intent.putExtra("isChangeLockMode", true);
+                    startActivityForResult(intent, 0);
+                }
+            });
+
+            view.findViewById(R.id.layoutFingerprint2).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialogLock.dismiss();
+                    Intent intent = new Intent(getApplicationContext(), FingerprintActivity.class);
+                    intent.putExtra("isChangeLockMode", false);
+                    startActivityForResult(intent, 0);
+                }
+            });
+        }
+        dialogLock.show();
     }
 }

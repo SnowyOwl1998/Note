@@ -33,6 +33,9 @@ public class Note implements Serializable {
     @ColumnInfo(name = "web_link")
     private String webLink;
 
+    @ColumnInfo(name = "lock_mode")
+    private Boolean lockMode;
+
     public int getId() {
         return id;
     }
@@ -97,9 +100,23 @@ public class Note implements Serializable {
         this.webLink = webLink;
     }
 
+    public Boolean getLockMode() {
+        return lockMode;
+    }
+
+    public void setLockMode(Boolean lockMode) {
+        this.lockMode = lockMode;
+    }
+
     @NonNull
     @Override
     public String toString() {
         return title + " : " + dateTime;
+    }
+
+    public static final String PASS_PHARSE = "!@#$%^";
+
+    public void security(){
+
     }
 }

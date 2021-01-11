@@ -1,4 +1,4 @@
-package com.example.note.entities;
+package com.example.note.security;
 
 import android.Manifest;
 import android.app.Activity;
@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.hardware.fingerprint.FingerprintManager;
 import android.os.Build;
 import android.os.CancellationSignal;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -41,34 +42,35 @@ public class FingerprintHandler extends FingerprintManager.AuthenticationCallbac
 
     @Override
     public void onAuthenticationError(int errMsgId, CharSequence errString) {
-        this.update(ERROR, false);
+        this.update(ERROR);
         Log.d("FingerprintLog",  errMsgId+": "+errString);
     }
 
     @Override
     public void onAuthenticationHelp(int helpMsgId, CharSequence helpString) {
-        this.update(HELP, false);
+        this.update(HELP);
         Log.d("FingerprintLog", helpMsgId+": "+helpString);
     }
 
     @Override
     public void onAuthenticationFailed() {
-        this.update(FAILED, false);
+        this.update(FAILED);
         Log.d("FingerprintLog", "");
     }
 
     @Override
     public void onAuthenticationSucceeded(FingerprintManager.AuthenticationResult result) {
-        this.update(SUCCESS, true);
+        this.update(SUCCESS);
         Log.d("FingerprintLog", String.valueOf(result));
     }
 
-    public void update(final int i, Boolean success){
+    public void update(final int i){
         TextView textView = (TextView) ((Activity)context).findViewById(R.id.errorText);
         textView.setTextColor(ContextCompat.getColor(context,R.color.colorDelete));
         textView.setVisibility(View.VISIBLE);
         if(i == SUCCESS){
             textView.setText("Mở khóa thành công.");
+            ((Activity) context).finish();
         } else if (i == ERROR) {
             textView.setText("Xảy ra lỗi");
         } else if (i == FAILED) {

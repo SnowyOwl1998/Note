@@ -20,4 +20,7 @@
     <string name="desc">Sử dụng dấu vân tay để bảo mật ghi chú của bạn</string>
     <string name="lock">Khóa ghi chú</string>
     <string name="unlock">Mở khóa ghi chú</string>
+    <string name="pin">Mã PIN</string>
+    <string name="fingerprint">Vân tay</string>
+    <string name="choose_lock">Chọn kiểu khóa</string>
 </resources>

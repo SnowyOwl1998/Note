@@ -5,6 +5,7 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import com.example.note.entities.Note;
 
@@ -20,5 +21,11 @@ public interface NoteDao {
 
     @Delete
     void deleteNote(Note note);
+
+    @Query("UPDATE notes SET lock_mode = :lockMode WHERE id = :id")
+    void lockNote(Boolean lockMode, int id);
+
+    @Query("SELECT lock_mode FROM notes WHERE id = :id")
+    int checkLockNote(int id);
 
 }
